@@ -1,0 +1,60 @@
+1.feladat KÉSZ
+
+SELECT SZOBA_FK,
+    COUNT(*) AS foglalas
+FROM Foglalas
+GROUP BY SZOBA_FK
+
+2.feladat
+
+SELECT SZALLAS_ID,
+    SZALLAS_NEV,
+    HELY,
+    CSILLAGOK_SZAMA
+FROM Szallashely
+ORDER BY CSILLAGOK_SZAMA DESC
+
+3.feladat NINCS KÉSZ
+
+SELECT v.NEV,
+        v.USERNEV,
+        v.SZUL_DAT
+FROM Foglalas f JOIN Vendeg v ON f.UGYFEL_FK = v.USERNEV
+
+4.feladat
+
+SELECT DISTINCT sz.SZALLAS_ID, sz.SZALLAS_NEV, DAY(f.METTOL) AS 'Naponta',
+       COUNT(*) OVER(PARTITION BY sz.SZALLAS_ID, DAY(f.METTOL))
+       AS 'Napi_foglalásszám'
+FROM Foglalas f JOIN Szallashely sz ON f.SZOBA_FK = sz.SZALLAS_ID
+WHERE Napi_foglalásszám>1
+
+5.feladat
+
+CREATE TABLE #MASKED_GUEST
+(
+    USERNEV int PRIMARY KEY,
+    NEV nvarchar(20) MASKED WITH (FUNCTION = 'partial(2, "XXXX", 3)'),
+    EMAIL nvarchar,
+    SZAML_CIM nvarchar,
+    SZUL_DAT int
+)
+
+6.feladat
+
+HSET IRO:1 nev "Nagy Peter" nemzetiseg "magyar"
+HSET IRO:2 nev "Kis Jancsi" nemzetiseg "ukran"
+HSET KONYV:1 cim "kitalalt1" mufaj "novella" IRO_ID "1"
+HSET KONYV:2 cim "kitalalt2" mufaj "regeny" IRO_ID "2"
+
+7.feladat
+
+CREATE TABLE STUDENT(
+            ... ID INT,
+            ... teljesitett_felevek list<INT>,
+            ... eredmenyek MAP<INT>,
+            ... nyelvtudas SET<TEXT>, PRIMARY KEY(ID))
+INSERT INTO STUDENT(ID,teljesitett_felevek, eredmenyek, nyelvtudas)
+VALUES(1,[1,2],{1:3.00, 2:4.00},{'magyar','angol'});
+INSERT INTO STUDENT(ID,teljesitett_felevek, eredmenyek, nyelvtudas)
+VALUES(2,[1,2,3],{1:3.00, 2:4.00, 3: 4.50},{'magyar','nemet'});
