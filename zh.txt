@@ -14,7 +14,7 @@ SELECT SZALLAS_ID,
 FROM Szallashely
 ORDER BY CSILLAGOK_SZAMA DESC
 
-3.feladat NINCS KÉSZ
+3.feladat
 
 SELECT v.NEV,
         v.USERNEV,
